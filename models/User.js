@@ -9,6 +9,10 @@ module.exports = db.sequelize.define(
             primaryKey: true,
             autoIncrement: true
         },
+        date: {
+            type: Sequelize.DATE,
+            defaultValue: Sequelize.NOW
+        },
         name: {
             type: Sequelize.STRING
         },
