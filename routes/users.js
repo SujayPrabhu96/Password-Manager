@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { displayForm , registerUser , checkEmailExists } = require('../Controllers/RegisterController');
+const { displayLoginForm } = require('../Controllers/LoginController');
 const { validationResult } = require('express-validator');
 const  Validation  = require('../helpers/validate');
 
-//routes
+//Register routes
 router.get('/register', displayForm);
 
 router.post('/register', [Validation.validate_reg()], async (req , res) => {
@@ -35,5 +36,8 @@ router.post('/register', [Validation.validate_reg()], async (req , res) => {
         });
     }
 });
+
+//Login routes
+router.get('/login', displayLoginForm);
 
 module.exports = router;
