@@ -10,4 +10,12 @@ const validate_reg = () => {
     ];
 };
 
+const validate_login = () => {
+    return [
+        check('email').trim().notEmpty().withMessage('Email field should not be Empty'),
+        check('email').isEmail().withMessage('Email is not in proper format')
+    ];
+};
+
 module.exports.validate_reg = validate_reg;
+module.exports.validate_login = validate_login;

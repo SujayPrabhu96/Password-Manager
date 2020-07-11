@@ -10,7 +10,6 @@ const displayLoginForm = (req, res) => {
 const loginUser = (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         let errors = [];
-        console.log(info);
         if(!user){
             errors.push({msg: info.message});
             res.render('users/login', {

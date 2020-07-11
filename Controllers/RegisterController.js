@@ -24,7 +24,7 @@ const registerUser = async (req, res) => {
     try{
         password = await generateHash(password);
         await User.create({ name, email, password});
-        res.render('users/register', {title: 'Register'}); //need to create login route
+        res.render('users/login', {title: 'Login'});
     } catch(error){
         errors.push({msg: error});
         res.render('users/register', {
@@ -36,7 +36,7 @@ const registerUser = async (req, res) => {
 
 const checkEmailExists = async (email) => { 
     try{
-        return await User.count({ where: {'email': emal} });
+        return await User.count({ where: {'email': email} });
     } catch(error){
         throw new Error(error);
     }
