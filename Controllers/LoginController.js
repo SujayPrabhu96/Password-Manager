@@ -18,7 +18,7 @@ const loginUser = (req, res, next) => {
                 errors
             })
         }
-        res.render('users/login', {title: 'Login'});
+        res.render('apps/passwords', {title: 'Application-Passwords'});
     })(req, res, next);
 }
 
