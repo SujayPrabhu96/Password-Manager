@@ -4,7 +4,10 @@ const bcrypt = require('bcryptjs');
 const generateHash = (password) => {
     return new Promise((resolve, reject) => {
         bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(password, salt, (err, hash) => resolve(hash));
+            bcrypt.hash(password, salt, (err, hash) => {
+                if(err) reject('Something Went Wrong');
+                resolve(hash);
+            });
         });
     });
 };
@@ -18,25 +21,25 @@ const displayForm = (req, res) => {
 const registerUser = async (req, res) => {
     const errors = [];
     let { name , email , password, confirm_pwd } = req.body;
-    password = await generateHash(password);
-    User.create({ name, email, password})
-    .then(user => res.render('users/register', {title: 'Register'})) //need to create login route
-    .catch(error => {
+    try{
+        password = await generateHash(password);
+        await User.create({ name, email, password});
+        res.render('users/register', {title: 'Register'}); //need to create login route
+    } catch(error){
         errors.push({msg: error});
         res.render('users/register', {
             title: 'Register',
-            name, email, password, confirm_pwd, errors
-        })
-    });
+            name, email, password, errors
+        });
+    }
 };
 
-const checkEmailExists = (email) => { 
-    return new Promise((resolve, reject) => {
-        User.count({
-            where: {'email': email}
-        })
-        .then(count => resolve(count));
-    });
+const checkEmailExists = async (email) => { 
+    try{
+        return await User.count({ where: {'email': emal} });
+    } catch(error){
+        throw new Error(error);
+    }
 };
 
 module.exports.displayForm = displayForm;

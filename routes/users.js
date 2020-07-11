@@ -10,20 +10,29 @@ router.get('/register', displayForm);
 router.post('/register', [Validation.validate_reg()], async (req , res) => {
     const errors = validationResult(req).errors;
     const { name, email, password , confirm_pwd } = req.body;
-    const count = await checkEmailExists(email);
-    if(count){
-        errors.push({msg: 'Email already exists'});
-    }
-    if(password !== confirm_pwd){
-        errors.push({msg: 'Password and Confirm Password should be same'});
-    }
-    if(errors.length){
+    try{
+        const count = await checkEmailExists(email);
+        if(count){
+            errors.push({msg: 'Email already exists'});
+        }
+        if(password !== confirm_pwd){
+            errors.push({msg: 'Password and Confirm Password should be same'});
+        }
+        if(errors.length){
+            res.render('users/register', {
+                title: 'Register',
+                errors, name, email, password
+            });
+        }
+        registerUser(req, res);
+
+    } catch(error){
+        
+        errors.push({msg: error});
         res.render('users/register', {
             title: 'Register',
-            errors, name, email, password, confirm_pwd
+            errors, name, email, password
         });
-    } else {
-        registerUser(req, res);
     }
 });
 
