@@ -40,6 +40,15 @@ router.post('/register', [Validation.validate_reg()], async (req , res) => {
 //Login routes
 router.get('/login', displayLoginForm);
 
-router.post('/login', loginUser);
+router.post('/login', [Validation.validate_login()], (req, res) => {
+    const errors = validationResult(req).errors;
+    if(errors.length){
+        res.render('users/login', {
+            title: 'Login',
+            errors
+        });
+    }
+    loginUser(req, res);
+});
 
 module.exports = router;
