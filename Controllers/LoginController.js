@@ -29,6 +29,19 @@ const loginUser = (req, res, next) => {
                 }
             });
         }
+<<<<<<< HEAD
+=======
+        req.login(user, (error) => {
+            if(error){
+                errors.push({msg: info.message});
+                res.render('users/login', {
+                    title: 'Login',
+                    errors
+                })
+            }
+            res.render('apps/passwords', {title: 'Application-Passwords'});
+        });
+>>>>>>> Access only to authorized user for apps/passwords
     })(req, res, next);
 }
 
