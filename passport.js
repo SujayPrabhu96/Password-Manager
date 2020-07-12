@@ -34,8 +34,12 @@ module.exports = (passport) => {
     });
       
     passport.deserializeUser((id, done) => {
-        User.findById(id, (err, user) => {
-          done(err, user);
+        User.findByPk(id)
+        .then(user => {
+            if(!user){
+                return done(null, false, {message: 'Wrong User Id'});
+            }
+            done(null, user);
         });
     });
 }; 
