@@ -24,8 +24,9 @@ const loginUser = (req, res, next) => {
                         title: 'Login',
                         errors
                     })
+                } else {
+                    res.render('apps/passwords', {title: 'Application-Passwords'});
                 }
-                res.render('apps/passwords', {title: 'Application-Passwords'});
             });
         }
     })(req, res, next);
