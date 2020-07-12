@@ -85,9 +85,10 @@ module.exports.displayAddForm = displayAddForm;
 module.exports.savePassword = savePassword;
 =======
 const listPasswords = (req, res) => {
+    console.log(req.isLogged);
     res.render('apps/passwords', {
         title: 'Application-Passwords',
-        isLoggedIn: req.isLogged
+        isLoggedIn: true
     });
 };
 
