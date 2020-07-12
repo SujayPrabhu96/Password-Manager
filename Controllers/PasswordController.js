@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const Cryptr = require('cryptr');
 const cryptr = new Cryptr('myTotalySecretKey');
 const AppPassword = require('../models/AppPasswords');
@@ -82,3 +83,13 @@ const savePassword = async(req, res) => {
 module.exports.listPasswords = listPasswords;
 module.exports.displayAddForm = displayAddForm;
 module.exports.savePassword = savePassword;
+=======
+const listPasswords = (req, res) => {
+    res.render('apps/passwords', {
+        title: 'Application-Passwords',
+        isLoggedIn: req.isLogged
+    });
+};
+
+module.exports.listPasswords = listPasswords;
+>>>>>>> Access only to authorized user for apps/passwords
