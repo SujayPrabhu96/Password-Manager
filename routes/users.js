@@ -52,4 +52,10 @@ router.post('/login', [Validation.validate_login()], (req, res) => {
     }
 });
 
+//logout routes
+router.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/users/login');
+});
+
 module.exports = router;
