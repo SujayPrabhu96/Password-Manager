@@ -36,7 +36,7 @@ const registerUser = async (req, res) => {
 
 const checkEmailExists = async (email) => { 
     try{
-        return await User.count({ where: {'email': emal} });
+        return await User.count({ where: {'email': email} });
     } catch(error){
         throw new Error(error);
     }
