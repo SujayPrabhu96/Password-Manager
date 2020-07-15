@@ -16,6 +16,7 @@ const loginUser = (req, res, next) => {
                 title: 'Login',
                 errors
             })
+<<<<<<< HEAD
         } else {
             req.login(user, (error) => {
                 if(error){
@@ -29,6 +30,19 @@ const loginUser = (req, res, next) => {
                 }
             });
         }
+=======
+        }
+        req.login(user, (error) => {
+            if(error){
+                errors.push({msg: info.message});
+                res.render('users/login', {
+                    title: 'Login',
+                    errors
+                })
+            }
+            res.redirect('/apps/passwords');
+        });
+>>>>>>> List apps and passwords
     })(req, res, next);
 }
 

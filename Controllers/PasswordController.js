@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 const Cryptr = require('cryptr');
 const cryptr = new Cryptr('myTotalySecretKey');
 const AppPassword = require('../models/AppPasswords');
@@ -84,11 +85,29 @@ module.exports.listPasswords = listPasswords;
 module.exports.displayAddForm = displayAddForm;
 module.exports.savePassword = savePassword;
 =======
+=======
+const AppPassword = require('../models/AppPasswords');
+
+>>>>>>> List apps and passwords
 const listPasswords = (req, res) => {
-    console.log(req.isLogged);
-    res.render('apps/passwords', {
-        title: 'Application-Passwords',
-        isLoggedIn: true
+    AppPassword.findAll({
+        attributes: ['date', 'app', 'password']
+    })
+    .then(data => {
+        res.render('apps/passwords', {
+            title: 'Application-Passwords',
+            isLoggedIn: true,
+            data
+        });
+    })
+    .catch(error => {
+        let errors = [];
+        errors.push({msg: error});
+        res.render('apps/passwords', {
+            title: 'Application-Passwords',
+            isLoggedIn: true,
+            errors
+        })
     });
 };
 
