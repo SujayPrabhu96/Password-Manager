@@ -29,6 +29,7 @@ const loginUser = (req, res, next) => {
                 }
             });
         }
+
     })(req, res, next);
 }
 
