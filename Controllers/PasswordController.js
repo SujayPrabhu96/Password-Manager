@@ -2,6 +2,7 @@ const AppPassword = require('../models/AppPasswords');
 
 const listPasswords = (req, res) => {
     AppPassword.findAll({
+        where: { user_id: req.user.id},
         attributes: ['date', 'app', 'password']
     })
     .then(data => {
