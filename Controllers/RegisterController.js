@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const generateHash = (password) => {
     return new Promise((resolve, reject) => {
         bcrypt.genSalt(10, (err, salt) => {
+            if(err) reject('Something Went Wrong');
             bcrypt.hash(password, salt, (err, hash) => {
                 if(err) reject('Something Went Wrong');
                 resolve(hash);
