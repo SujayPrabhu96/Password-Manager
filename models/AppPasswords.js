@@ -15,6 +15,9 @@ module.exports = db.sequelize.define(
         app: {
             type: Sequelize.STRING
         },
+        username: {
+            type: Sequelize.STRING
+        },
         password: {
             type: Sequelize.STRING
         }
