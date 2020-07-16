@@ -23,4 +23,12 @@ const listPasswords = (req, res) => {
     });
 };
 
+const displayAddForm = (req, res) => {
+    res.render('apps/add_password', {
+        title: 'Add Application-Password',
+        isLoggedIn: true
+    });
+};
+
 module.exports.listPasswords = listPasswords;
+module.exports.displayAddForm = displayAddForm;
