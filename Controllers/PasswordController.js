@@ -1,3 +1,5 @@
+const Cryptr = require('cryptr');
+const cryptr = new Cryptr('myTotalySecretKey');
 const AppPassword = require('../models/AppPasswords');
 
 const listPasswords = (req, res) => {
@@ -41,6 +43,7 @@ const userAppExists = async (user_id, app) => {
 const updatePassword = async(user_id, params) => {
     try{
         let { app, username, password } = params;
+        password = cryptr.encrypt(password);
         return await AppPassword.update(
             { app, username, password },
             { where: { 'user_id': user_id, 'app': app } }
@@ -54,6 +57,7 @@ const savePassword = async(req, res) => {
     const user_id = req.user.id;
     const date = new Date().toISOString().slice(0, 10);
     let { app, username, password } = req.body;
+    password = cryptr.encrypt(password);
     try{
         let count = await userAppExists(user_id, app); //check if entry is present for app with logged in user
         if(count){
