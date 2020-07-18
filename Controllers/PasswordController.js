@@ -5,7 +5,7 @@ const AppPassword = require('../models/AppPasswords');
 const listPasswords = (req, res) => {
     AppPassword.findAll({
         where: { user_id: req.user.id},
-        attributes: ['date', 'app', 'username', 'password']
+        attributes: ['id', 'date', 'app', 'username', 'password']
     })
     .then(data => {
         data.map((app) => app.password = cryptr.decrypt(app.password));
@@ -79,6 +79,23 @@ const savePassword = async(req, res) => {
     
 }
 
+const deletePassword = (req, res) => {
+    AppPassword.destroy({
+        where: {
+            id: req.params.id
+        }
+    })
+    .then(res.redirect('/apps/passwords'))
+    .catch(error => {
+        res.render('apps/add_password', {
+            title: 'Add Application-Password',
+            isLoggedIn: true,
+            errors
+        });
+    });
+};
+
 module.exports.listPasswords = listPasswords;
 module.exports.displayAddForm = displayAddForm;
 module.exports.savePassword = savePassword;
+module.exports.deletePassword = deletePassword;
