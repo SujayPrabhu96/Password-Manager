@@ -17,5 +17,13 @@ const validate_login = () => {
     ];
 };
 
+const validate_pwd_form = () => {
+    return[
+        check('app').trim().notEmpty().withMessage('Application should not be Empty'),
+        check('username').trim().notEmpty().withMessage('Username should not be empty')
+    ];
+};
+
 module.exports.validate_reg = validate_reg;
 module.exports.validate_login = validate_login;
+module.exports.validate_pwd_form = validate_pwd_form;
