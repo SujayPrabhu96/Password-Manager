@@ -8,6 +8,7 @@ const listPasswords = (req, res) => {
         attributes: ['date', 'app', 'username', 'password']
     })
     .then(data => {
+        data.map((app) => app.password = cryptr.decrypt(app.password));
         res.render('apps/passwords', {
             title: 'Application-Passwords',
             isLoggedIn: true,
