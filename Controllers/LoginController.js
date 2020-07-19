@@ -19,7 +19,7 @@ const loginUser = (req, res, next) => {
         }
         req.login(user, (error) => {
             if(error){
-                errors.push({msg: info.message});
+                errors.push({msg: error});
                 res.render('users/login', {
                     title: 'Login',
                     errors

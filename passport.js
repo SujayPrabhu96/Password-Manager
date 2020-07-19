@@ -3,15 +3,11 @@ const bcrypt = require('bcryptjs');
 const User = require('./models/User');
 
 module.exports = (passport) => {
-        passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
-            User.findOne({
-                where: {
-                    email: email
-                }
-            })
-            .then(user => {
+        passport.use(new LocalStrategy({ usernameField: 'email', passwordField: 'password'}, async (email, password, done) => {
+            try{
+                let user = await User.findOne({ where: { email: email } });
                 if(!user){
-                    return done(null, false, {message: 'Email is not registered'})
+                    return done(null, false, {message: 'Email or Password is Incorrect'})
                 }
                 bcrypt.compare(password, user.password, (err, isMatch) => {
                     if(err){
@@ -21,11 +17,10 @@ module.exports = (passport) => {
                         return done(null, user);
                     }
                     return done(null, false, {message: 'Incorrect Password'});
-                })
-            })
-            .catch(error => {
-                return done(null, false, {message: 'Something Went Wrong with SignIn'})
-            });
+                });
+            } catch(error){
+                return done(error);
+            }
         })
     );
 
@@ -33,13 +28,15 @@ module.exports = (passport) => {
         done(null, user.id);
     });
       
-    passport.deserializeUser((id, done) => {
-        User.findByPk(id)
-        .then(user => {
+    passport.deserializeUser(async (id, done) => {
+        try{
+            const user = await User.findByPk(id);
             if(!user){
                 return done(null, false, {message: 'Wrong User Id'});
             }
             done(null, user);
-        });
+        } catch(error) {
+            done(error);
+        }
     });
 }; 
