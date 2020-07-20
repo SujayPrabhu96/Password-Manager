@@ -79,6 +79,25 @@ const savePassword = async(req, res) => {
     
 }
 
+const displayEditForm = async(req, res) => {
+    try{
+        let app_data = await AppPassword.findOne({ where: { id: req.params.id } });
+        res.render('apps/edit_password', {
+            title: 'Edit Application-Password',
+            isLoggedIn: true,
+            data: app_data
+        });
+    } catch(error) {
+        let errors = [];
+        errors.push({msg: error});
+        res.render('apps/edit_password', {
+            title: 'Edit Application-Password',
+            isLoggedIn: true,
+            errors
+        });
+    }
+};
+
 const deletePassword = (req, res) => {
     AppPassword.destroy({
         where: {
@@ -98,4 +117,5 @@ const deletePassword = (req, res) => {
 module.exports.listPasswords = listPasswords;
 module.exports.displayAddForm = displayAddForm;
 module.exports.savePassword = savePassword;
+module.exports.displayEditForm = displayEditForm;
 module.exports.deletePassword = deletePassword;
