@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { listPasswords, displayAddForm, savePassword, deletePassword } = require('../Controllers/PasswordController');
+const { listPasswords, displayAddForm, savePassword, deletePassword, displayEditForm } = require('../Controllers/PasswordController');
 const { isLoggedIn } = require('../auth');
 const { validationResult } = require('express-validator');
 const Validation = require('../helpers/validate');
@@ -24,6 +24,8 @@ router.post('/add-password', [Validation.validate_pwd_form()], isLoggedIn, (req,
     savePassword(req, res);
 });
 
-router.get('/delete-password/:id', deletePassword);
+router.get('/edit-password/:id', isLoggedIn, displayEditForm);
+
+router.get('/delete-password/:id', isLoggedIn, deletePassword);
 
 module.exports = router;
