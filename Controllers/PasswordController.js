@@ -50,7 +50,7 @@ const updatePassword = async(user_id, params) => {
             { where: { 'user_id': user_id, 'app': app } }
         );
     } catch(error) {
-        throw new Error(errro);
+        throw new Error(error);
     }
 };
 
@@ -114,8 +114,25 @@ const deletePassword = (req, res) => {
     });
 };
 
+const editPassword = async (req, res) => {
+    const user_id = req.user.id;
+    try{
+        await updatePassword(user_id, req.body);
+        res.redirect('/apps/passwords');
+    } catch(error) {
+        let errors = [];
+        errors.push({msg: error});
+        res.render('apps/edit_password', {
+            title: 'Edit Application-Password',
+            isLoggedIn: true,
+            errors
+        });
+    }
+};
+
 module.exports.listPasswords = listPasswords;
 module.exports.displayAddForm = displayAddForm;
 module.exports.savePassword = savePassword;
 module.exports.displayEditForm = displayEditForm;
+module.exports.editPassword = editPassword;
 module.exports.deletePassword = deletePassword;
