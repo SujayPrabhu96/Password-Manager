@@ -16,17 +16,18 @@ const loginUser = (req, res, next) => {
                 title: 'Login',
                 errors
             })
+        } else {
+            req.login(user, (error) => {
+                if(error){
+                    errors.push({msg: error});
+                    res.render('users/login', {
+                        title: 'Login',
+                        errors
+                    })
+                }
+                res.render('apps/passwords', {title: 'Application-Passwords'});
+            });
         }
-        req.login(user, (error) => {
-            if(error){
-                errors.push({msg: error});
-                res.render('users/login', {
-                    title: 'Login',
-                    errors
-                })
-            }
-            res.render('apps/passwords', {title: 'Application-Passwords'});
-        });
     })(req, res, next);
 }
 

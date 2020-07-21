@@ -47,8 +47,9 @@ router.post('/login', [Validation.validate_login()], (req, res) => {
             title: 'Login',
             errors
         });
+    } else {
+        loginUser(req, res);
     }
-    loginUser(req, res);
 });
 
 module.exports = router;
