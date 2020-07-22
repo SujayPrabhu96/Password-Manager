@@ -11,8 +11,7 @@ router.get('/add-password', isLoggedIn, displayAddForm);
 
 router.post('/add-password', [Validation.validate_pwd_form()], isLoggedIn, (req, res) => {
     const errors = validationResult(req).errors;
-    const password = req.body.password;
-    const confirm_password = req.body.confirm_password;
+    const { password, confirm_password } = req.body;
     if(password != confirm_password){
         errors.push({msg: 'Password and Confirm Password should be same'});
         res.render('apps/add_password', {
@@ -20,8 +19,9 @@ router.post('/add-password', [Validation.validate_pwd_form()], isLoggedIn, (req,
             isLoggedIn: true,
             errors
         });
+    } else {
+        savePassword(req, res);
     }
-    savePassword(req, res);
 });
 
 module.exports = router;
