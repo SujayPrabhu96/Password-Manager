@@ -25,7 +25,7 @@ const loginUser = (req, res, next) => {
                         errors
                     })
                 } else {
-                    res.render('apps/passwords', {title: 'Application-Passwords'});
+                    res.redirect('/apps/passwords');
                 }
             });
         }
