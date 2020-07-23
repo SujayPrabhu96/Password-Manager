@@ -1,7 +1,8 @@
 const Cryptr = require('cryptr');
 const cryptr = new Cryptr('myTotalySecretKey');
-const User = require('../models/User');
 const nodemailer = require('nodemailer');
+const fs = require('fs');
+const User = require('../models/User');
 const AppPassword = require('../models/AppPasswords');
 const { generatePDF } = require('./PDFController');
 const { email_host, email_port, email_user, email_password } = require('../config');
@@ -139,7 +140,7 @@ const sendMail = async (req, res) => {
         const user = await User.findOne({ where: {id: req.user.id}, attributes:['name', 'email'] });
         const app_data = await AppPassword.findAll({ where: {user_id: req.user.id} });
         app_data.map((val) => val.password = cryptr.decrypt(val.password));
-        await generatePDF(app_data);
+        const pdf = await generatePDF(app_data);
         
         let transporter = nodemailer.createTransport({
             host: email_host,
@@ -159,7 +160,11 @@ const sendMail = async (req, res) => {
              from: email_user,
              to: user.email,
              subject: 'Application Passwords List',
-             text: `Hi ${user.name}, here is the list of applications and its credentials.`
+             text: `Hi ${user.name}, here is the list of applications and its credentials.`,
+             attachments: [{
+                filename: pdf,
+                path: pdf
+             }]
         };
 
         const { error, info } = await transporter.sendMail(mailOptions);
@@ -173,6 +178,7 @@ const sendMail = async (req, res) => {
                 data: []
             });
         } else {
+            fs.unlinkSync(pdf);
             res.redirect('/apps/passwords');
         }
     } catch(error){
