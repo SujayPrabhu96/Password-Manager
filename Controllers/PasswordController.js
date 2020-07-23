@@ -3,6 +3,7 @@ const cryptr = new Cryptr('myTotalySecretKey');
 const User = require('../models/User');
 const nodemailer = require('nodemailer');
 const AppPassword = require('../models/AppPasswords');
+const { generatePDF } = require('./PDFController');
 const { email_host, email_port, email_user, email_password } = require('../config');
 
 const listPasswords = (req, res) => {
@@ -136,7 +137,10 @@ const editPassword = async (req, res) => {
 const sendMail = async (req, res) => {
     try{
         const user = await User.findOne({ where: {id: req.user.id}, attributes:['name', 'email'] });
-
+        const app_data = await AppPassword.findAll({ where: {user_id: req.user.id} });
+        app_data.map((val) => val.password = cryptr.decrypt(val.password));
+        await generatePDF(app_data);
+        
         let transporter = nodemailer.createTransport({
             host: email_host,
             port: email_port,
@@ -165,22 +169,26 @@ const sendMail = async (req, res) => {
             res.render('apps/passwords', {
                 title: 'Application-Passwords',
                 isLoggedIn: true,
-                errors
+                errors,
+                data: []
             });
         } else {
             res.redirect('/apps/passwords');
         }
     } catch(error){
+        console.log(error);
         let errors = [];
         errors.push({msg: error});
         res.render('apps/passwords', {
             title: 'Application-Passwords',
             isLoggedIn: true,
-            errors
+            errors,
+            data: []
         });
     }
  
 };
+
 
 module.exports.listPasswords = listPasswords;
 module.exports.displayAddForm = displayAddForm;
