@@ -41,9 +41,10 @@ const generatePDF = (app_data) => {
         let doc = new PDFDocument({ margin: 50 });
         generateHeader(doc);
         generateData(doc, app_data);
+        const pdf = `${new Date().getTime().toString()}.pdf`;
         doc.end();
-        doc.pipe(fs.createWriteStream(`${new Date().getTime().toString()}.pdf`))
-            .on("finish", resolve(true))
+        doc.pipe(fs.createWriteStream(pdf))
+            .on("finish", resolve(pdf))
             .on("error", (error) => reject(error));
     });
 };
