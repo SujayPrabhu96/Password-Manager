@@ -196,6 +196,7 @@ const sendMail = async (req, res) => {
 };
 
 
+
 module.exports.listPasswords = listPasswords;
 module.exports.displayAddForm = displayAddForm;
 module.exports.savePassword = savePassword;
@@ -203,3 +204,4 @@ module.exports.displayEditForm = displayEditForm;
 module.exports.editPassword = editPassword;
 module.exports.deletePassword = deletePassword;
 module.exports.sendMail = sendMail;
+
