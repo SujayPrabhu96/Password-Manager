@@ -1,6 +1,11 @@
 const Cryptr = require('cryptr');
 const cryptr = new Cryptr('myTotalySecretKey');
+const nodemailer = require('nodemailer');
+const fs = require('fs');
+const User = require('../models/User');
 const AppPassword = require('../models/AppPasswords');
+const { generatePDF } = require('./PDFController');
+const { email_host, email_port, email_user, email_password } = require('../config');
 
 const listPasswords = (req, res) => {
     AppPassword.findAll({
@@ -79,7 +84,6 @@ const savePassword = async(req, res) => {
     
 }
 
-
 const displayEditForm = async(req, res) => {
     try{
         let app_data = await AppPassword.findOne({ where: { id: req.params.id } });
@@ -98,7 +102,6 @@ const displayEditForm = async(req, res) => {
         });
     }
 };
-
 
 const deletePassword = (req, res) => {
     AppPassword.destroy({
@@ -132,9 +135,73 @@ const editPassword = async (req, res) => {
     }
 };
 
+const sendMail = async (req, res) => {
+    try{
+        const user = await User.findOne({ where: {id: req.user.id}, attributes:['name', 'email'] });
+        const app_data = await AppPassword.findAll({ where: {user_id: req.user.id} });
+        app_data.map((val) => val.password = cryptr.decrypt(val.password));
+        const pdf = await generatePDF(app_data);
+        
+        let transporter = nodemailer.createTransport({
+            host: email_host,
+            port: email_port,
+            secure: false,
+            requireTLS: true,
+            auth: {
+                user: email_user,
+                pass: email_password 
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        });
+        
+        let mailOptions = {
+             from: email_user,
+             to: user.email,
+             subject: 'Application Passwords List',
+             text: `Hi ${user.name}, here is the list of applications and its credentials.`,
+             attachments: [{
+                filename: pdf,
+                path: pdf
+             }]
+        };
+
+        const { error, info } = await transporter.sendMail(mailOptions);
+        if (error) {
+            let errors = [];
+            errors.push({msg: error.message});
+            res.render('apps/passwords', {
+                title: 'Application-Passwords',
+                isLoggedIn: true,
+                errors,
+                data: []
+            });
+        } else {
+            fs.unlinkSync(pdf);
+            res.redirect('/apps/passwords');
+        }
+    } catch(error){
+        console.log(error);
+        let errors = [];
+        errors.push({msg: error});
+        res.render('apps/passwords', {
+            title: 'Application-Passwords',
+            isLoggedIn: true,
+            errors,
+            data: []
+        });
+    }
+ 
+};
+
+
+
 module.exports.listPasswords = listPasswords;
 module.exports.displayAddForm = displayAddForm;
 module.exports.savePassword = savePassword;
 module.exports.displayEditForm = displayEditForm;
 module.exports.editPassword = editPassword;
 module.exports.deletePassword = deletePassword;
+module.exports.sendMail = sendMail;
+

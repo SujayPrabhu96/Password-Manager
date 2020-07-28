@@ -28,31 +28,15 @@ module.exports = (passport) => {
         done(null, user.id);
     });
       
-<<<<<<< HEAD
     passport.deserializeUser(async (id, done) => {
         try{
             const user = await User.findByPk(id);
-=======
-    passport.deserializeUser((id, done) => {
-        User.findByPk(id)
-        .then(user => {
-<<<<<<< HEAD
->>>>>>> Access only to authorized user for apps/passwords
-=======
->>>>>>> e3c7bf0826ba5256dd80bb02daf46a6a0eda2fe4
             if(!user){
                 return done(null, false, {message: 'Wrong User Id'});
             }
             done(null, user);
-<<<<<<< HEAD
-<<<<<<< HEAD
         } catch(error) {
             done(error);
         }
-=======
-=======
->>>>>>> e3c7bf0826ba5256dd80bb02daf46a6a0eda2fe4
-        });
->>>>>>> Access only to authorized user for apps/passwords
     });
 }; 
