@@ -79,6 +79,7 @@ const savePassword = async(req, res) => {
     
 }
 
+
 const displayEditForm = async(req, res) => {
     try{
         let app_data = await AppPassword.findOne({ where: { id: req.params.id } });
@@ -97,6 +98,7 @@ const displayEditForm = async(req, res) => {
         });
     }
 };
+
 
 const deletePassword = (req, res) => {
     AppPassword.destroy({

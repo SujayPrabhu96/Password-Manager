@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { listPasswords, displayAddForm, savePassword, deletePassword, displayEditForm, editPassword } = require('../Controllers/PasswordController');
+
 const { isLoggedIn } = require('../auth');
 const { validationResult } = require('express-validator');
 const Validation = require('../helpers/validate');
