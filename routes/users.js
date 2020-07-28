@@ -58,4 +58,16 @@ router.get('/logout', (req, res) => {
     res.redirect('/users/login');
 });
 
+//logout routes
+router.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/users/login');
+});
+
+//logout routes
+router.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/users/login');
+});
+
 module.exports = router;
