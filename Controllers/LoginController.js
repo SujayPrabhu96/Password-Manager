@@ -30,7 +30,10 @@ const loginUser = (req, res, next) => {
             });
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> e3c7bf0826ba5256dd80bb02daf46a6a0eda2fe4
         req.login(user, (error) => {
             if(error){
                 errors.push({msg: info.message});
@@ -41,7 +44,10 @@ const loginUser = (req, res, next) => {
             }
             res.redirect('/apps/passwords');
         });
+<<<<<<< HEAD
 >>>>>>> Access only to authorized user for apps/passwords
+=======
+>>>>>>> e3c7bf0826ba5256dd80bb02daf46a6a0eda2fe4
     })(req, res, next);
 }
 
