@@ -1,4 +1,4 @@
-# PasswordManager
+# Password-Manager
 
 Application to store user's applications and its password with User Registration and Login
 
